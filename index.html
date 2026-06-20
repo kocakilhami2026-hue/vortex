@@ -2,82 +2,219 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>VORTEX | Gaming Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VORTEX | Ultimate Gaming Network</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Rajdhani:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800;900&family=Rajdhani:wght@500;600;700&display=swap');
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: #050505; color: #e0e0e0; font-family: 'Rajdhani', sans-serif; overflow: hidden; height: 100vh; }
+        body { background-color: #070709; color: #e2e8f0; font-family: 'Rajdhani', sans-serif; overflow: hidden; height: 100vh; }
 
-        /* GİRİŞ EKRANI - HAVALI LOUNGE */
+        /* SİLİNDİR SCROLLBAR AYARI */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0f; }
+        ::-webkit-scrollbar-thumb { background: #1e3a8a; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3b82f6; }
+
+        /* SCREEN 1: GİRİŞ EKRANI (SEVDİĞİN HAVALI TASARIM) */
         #login-screen { display: flex; justify-content: center; align-items: center; height: 100vh; 
-                       background: radial-gradient(circle, #1a2a6c, #050505); }
-        .login-box { background: rgba(10, 10, 15, 0.95); padding: 40px; border-radius: 20px; 
-                     border: 1px solid #3b82f6; width: 380px; text-align: center; box-shadow: 0 0 20px #3b82f644; }
-        h1 { font-family: 'Orbitron', sans-serif; color: #3b82f6; font-size: 2.5rem; margin-bottom: 25px; text-transform: uppercase; }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; background: #15151a; border: 1px solid #333; 
-                        border-radius: 8px; color: #fff; font-size: 1rem; }
-        .btn-enter { width: 100%; padding: 15px; background: #3b82f6; border: none; border-radius: 8px; 
-                     color: #fff; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; margin-top: 15px; }
-        .btn-enter:hover { background: #2563eb; box-shadow: 0 0 15px #3b82f6; }
+                       background: radial-gradient(circle at center, #1e1b4b 0%, #070709 100%); }
+        .login-box { background: rgba(10, 10, 15, 0.95); padding: 45px; border-radius: 24px; 
+                     border: 2px solid #3b82f6; width: 400px; text-align: center; box-shadow: 0 0 35px rgba(59, 130, 246, 0.25); }
+        h1 { font-family: 'Orbitron', sans-serif; color: #3b82f6; font-size: 2.8rem; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 3px; }
+        .input-group { margin-bottom: 18px; text-align: left; }
+        .input-group label { display: block; font-size: 0.9rem; color: #64748b; margin-bottom: 6px; text-transform: uppercase; font-weight: 600; }
+        input, select { width: 100%; padding: 14px; background: #111116; border: 1px solid #1e293b; 
+                        border-radius: 10px; color: #fff; font-size: 1rem; outline: none; transition: 0.3s; }
+        input:focus, select:focus { border-color: #3b82f6; box-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
+        .btn-enter { width: 100%; padding: 16px; background: linear-gradient(90deg, #2563eb, #1d4ed8); border: none; border-radius: 10px; 
+                     color: #fff; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; margin-top: 15px; font-family: 'Orbitron', sans-serif; }
+        .btn-enter:hover { transform: translateY(-2px); box-shadow: 0 0 20px #3b82f6; }
 
-        /* ANA EKRAN - DASHBOARD */
-        #app-screen { display: none; height: 100vh; grid-template-columns: 250px 1fr 280px; }
-        .sidebar { background: #0a0a0f; border-right: 1px solid #222; padding: 20px; }
-        .chat-area { background: #0d0d12; display: flex; flex-direction: column; border-right: 1px solid #222; }
-        .friends-bar { background: #0a0a0f; padding: 20px; }
+        /* SCREEN 2: YENİLENEN PREMIUM İÇ EKRAN */
+        #app-screen { display: none; height: 100vh; grid-template-columns: 280px 1fr 280px; background: #09090d; }
         
-        .channel { padding: 12px; margin-bottom: 8px; background: #15151a; border-radius: 6px; cursor: pointer; color: #aaa; }
-        .channel:hover { background: #3b82f6; color: white; }
-        .msg-container { flex-grow: 1; padding: 20px; overflow-y: auto; }
-        .chat-input { padding: 20px; border-top: 1px solid #222; display: flex; gap: 10px; }
+        /* 1. SOL PANEL: KANALLAR VE ARAMA */
+        .sidebar { background: #0c0c14; border-right: 1px solid #1e293b; display: flex; flex-direction: column; }
+        .brand-header { padding: 24px 20px; border-bottom: 1px solid #1e293b; }
+        .brand-header h2 { font-family: 'Orbitron', sans-serif; color: #3b82f6; font-size: 1.5rem; letter-spacing: 1px; }
+        
+        /* İstediğin Arkadaş/Kanal Arama Kısmı */
+        .search-container { padding: 15px 20px; }
+        .search-bar { width: 100%; padding: 10px 14px; background: #161622; border: 1px solid #334155; border-radius: 8px; color: white; font-size: 0.9rem; }
+        .search-bar::placeholder { color: #64748b; }
+        
+        .menu-section { padding: 15px 20px; flex-grow: 1; overflow-y: auto; }
+        .section-title { font-size: 0.8rem; color: #475569; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; display: block; font-weight: 700; }
+        .channel-btn { padding: 12px 14px; margin-bottom: 8px; background: #13131f; border-radius: 8px; cursor: pointer; color: #94a3b8; transition: 0.3s; display: flex; align-items: center; gap: 10px; font-weight: 500; }
+        .channel-btn:hover, .channel-btn.active { background: linear-gradient(90deg, #1e3a8a, #2563eb); color: white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
+
+        /* 2. ORTA PANEL: SÜPER HAVALI SOHBET ALANI */
+        .chat-area { background: #0f0f18; display: flex; flex-direction: column; }
+        .chat-header { padding: 22px 25px; background: #0c0c14; border-bottom: 1px solid #1e293b; display: flex; align-items: center; justify-content: space-between; }
+        .chat-header h3 { font-family: 'Orbitron', sans-serif; font-size: 1.1rem; color: #f8fafc; }
+        
+        .msg-container { flex-grow: 1; padding: 25px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .premium-msg { background: #141423; padding: 15px 18px; border-radius: 14px; border: 1px solid #1e293b; max-width: 85%; transition: 0.3s; }
+        .premium-msg:hover { border-color: #3b82f6; background: #17172a; }
+        .msg-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+        .msg-author { font-weight: 700; color: #3b82f6; font-size: 1rem; }
+        .msg-badge { background: rgba(59, 130, 246, 0.15); color: #3b82f6; font-size: 0.75rem; padding: 2px 8px; border-radius: 6px; font-weight: 700; border: 1px solid rgba(59, 130, 246, 0.3); }
+        .msg-body { color: #cbd5e1; font-size: 1rem; line-height: 1.5; }
+
+        .chat-input-box { padding: 20px 25px; background: #0c0c14; border-top: 1px solid #1e293b; }
+        .input-flex { display: flex; gap: 12px; }
+        .input-flex input { flex-grow: 1; padding: 15px; background: #141423; border: 1px solid #1e293b; border-radius: 10px; color: white; font-size: 1rem; }
+        .btn-send { padding: 0 25px; background: #2563eb; border: none; color: white; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 1.1rem; }
+        .btn-send:hover { background: #1d4ed8; box-shadow: 0 0 15px rgba(37, 99, 235, 0.4); }
+
+        /* 3. SAĞ PANEL: AKTİF OYUNCULAR */
+        .friends-bar { background: #0c0c14; border-left: 1px solid #1e293b; padding: 24px 20px; display: flex; flex-direction: column; gap: 20px; }
+        .online-user { display: flex; align-items: center; gap: 12px; padding: 10px; background: #13131f; border-radius: 8px; border: 1px solid #1e293b; }
+        .status-indicator { width: 10px; height: 10px; background: #10b981; border-radius: 50%; box-shadow: 0 0 8px #10b981; }
+        .user-details { font-weight: 600; font-size: 0.95rem; color: #f1f5f9; }
     </style>
 </head>
 <body>
 
+    <!-- SCREEN 1: GİRİŞ EKRANI -->
     <div id="login-screen">
         <div class="login-box">
             <h1>VORTEX</h1>
-            <input type="text" id="user" placeholder="Kullanıcı Adın">
-            <select id="game">
-                <option>PUBG Mobile</option><option>Minecraft</option><option>Valorant</option>
-                <option>Roblox</option><option>Brawl Stars</option><option>eFootball</option>
-                <option>Free Fire</option><option>GTA V</option>
-            </select>
-            <button class="btn-enter" onclick="start()">LOBİYE BAĞLAN</button>
+            <div class="input-group">
+                <label>Kullanıcı Adın</label>
+                <input type="text" id="user-input" placeholder="Örn: HyperEdit">
+            </div>
+            <div class="input-group">
+                <label>Oyun Seçimi</label>
+                <select id="game-input">
+                    <option>eFootball</option>
+                    <option>GTA V</option>
+                    <option>Minecraft</option>
+                    <option>Valorant</option>
+                    <option>PUBG Mobile</option>
+                    <option>Roblox</option>
+                    <option>Brawl Stars</option>
+                    <option>Free Fire</option>
+                </select>
+            </div>
+            <button class="btn-enter" onclick="launchApp()">SİSTEME BAĞLAN</button>
         </div>
     </div>
 
+    <!-- SCREEN 2: YENİLENEN PREMIUM İÇ EKRAN -->
     <div id="app-screen">
+        
+        <!-- Sol Menü -->
         <div class="sidebar">
-            <h2 style="color:#3b82f6; margin-bottom:20px;">VORTEX</h2>
-            <div class="channel"># oyun-sohbet</div>
-            <div class="channel"># squad-bul</div>
-            <div class="channel"># takas-ticaret</div>
-        </div>
-        <div class="chat-area">
-            <div id="msg-box" class="msg-container"></div>
-            <div class="chat-input">
-                <input type="text" id="msg" placeholder="Mesaj gönder...">
-                <button onclick="send()" style="padding:0 20px; background:#3b82f6; border:none; color:white; border-radius:6px;">></button>
+            <div class="brand-header">
+                <h2>VORTEX NETWORK</h2>
+            </div>
+            <!-- ARADIĞIN ARKADAŞ / ODA ARAMA KUTUSU -->
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Arkadaş veya oda ara...">
+            </div>
+            <div class="menu-section">
+                <span class="section-title">Aktif Lobiler</span>
+                <div class="channel-btn active"># ana-lobi</div>
+                <div class="channel-btn"># squad-ilanlari</div>
+                <div class="channel-btn"># turnuva-odasi</div>
             </div>
         </div>
-        <div class="friends-bar">
-            <h3>AKTİF OYUNCULAR</h3>
-            <div style="margin-top:20px;">🟢 Vortex_Admin</div>
+
+        <!-- Orta Sohbet Alanı -->
+        <div class="chat-area">
+            <div class="chat-header">
+                <h3 id="lobby-title"># ana-lobi</h3>
+                <span style="color: #64748b; font-size: 0.9rem;" id="active-game-badge">Seçilen Oyun: Yükleniyor...</span>
+            </div>
+            
+            <div id="chat-box" class="msg-container">
+                <div class="premium-msg">
+                    <div class="msg-meta">
+                        <span class="msg-author">Sistem Botu</span>
+                        <span class="msg-badge">SİSTEM</span>
+                    </div>
+                    <div class="msg-body">Vortex Premium Lobiye hoş geldin! Aradığın arkadaşları ve odaları bulmak için sol üstteki arama panelini kullanabilirsin.</div>
+                </div>
+            </div>
+
+            <div class="chat-input-box">
+                <div class="input-flex">
+                    <input type="text" id="msg-field" placeholder="Lobiye mesaj gönder..." onkeypress="checkKey(event)">
+                    <button class="btn-send" onclick="postMessage()">Gönder</button>
+                </div>
+            </div>
         </div>
+
+        <!-- Sağ Aktif Oyuncular Menüsü -->
+        <div class="friends-bar">
+            <span class="section-title">Çevrimiçi Oyuncular (7)</span>
+            <div class="online-user">
+                <div class="status-indicator"></div>
+                <div class="user-details" id="player-username">Sen</div>
+            </div>
+            <div class="online-user"><div class="status-indicator"></div><div class="user-details">Vortex_Founder</div></div>
+            <div class="online-user"><div class="status-indicator"></div><div class="user-details">Pro_Minecraftci</div></div>
+            <div class="online-user"><div class="status-indicator"></div><div class="user-details">Neymar_Edit38</div></div>
+            <div class="online-user"><div class="status-indicator"></div><div class="user-details">Valorant_Vandal</div></div>
+        </div>
+
     </div>
 
     <script>
-        function start() {
+        let globalUser = "Oyuncu";
+        let globalGame = "eFootball";
+
+        function launchApp() {
+            let name = document.getElementById('user-input').value.trim();
+            if(!name) { alert("Kanka adını yazmayı unuttun!"); return; }
+            
+            globalUser = name;
+            globalGame = document.getElementById('game-input').value;
+
+            document.getElementById('player-username').innerText = globalUser + " (Sen)";
+            document.getElementById('active-game-badge').innerText = "Seçilen Oyun: " + globalGame;
+            
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('app-screen').style.display = 'grid';
+
+            let box = document.getElementById('chat-box');
+            box.innerHTML += `
+                <div class="premium-msg" style="border-color: #22c55e;">
+                    <div class="msg-meta">
+                        <span class="msg-author" style="color:#22c55e;">${globalUser}</span>
+                        <span class="msg-badge" style="background:rgba(34,197,94,0.15); color:#22c55e; border-color:rgba(34,197,94,0.3);">${globalGame}</span>
+                    </div>
+                    <div class="msg-body">Lobiye fırtına gibi giriş yaptı! Takım arkadaşı arıyor.</div>
+                </div>
+            `;
+            box.scrollTop = box.scrollHeight;
         }
-        function send() {
-            let m = document.getElementById('msg').value;
-            if(!m) return;
-            document.getElementById('msg-box').innerHTML += `<div style="padding:10px; border-bottom:1px solid #222;"><b>Sen:</b> ${m}</div>`;
-            document.getElementById('msg').value = '';
+
+        function postMessage() {
+            let field = document.getElementById('msg-field');
+            let txt = field.value.trim();
+            if(!txt) return;
+
+            let box = document.getElementById('chat-box');
+            box.innerHTML += `
+                <div class="premium-msg">
+                    <div class="msg-meta">
+                        <span class="msg-author">${globalUser}</span>
+                        <span class="msg-badge">Oyuncu</span>
+                    </div>
+                    <div class="msg-body">${txt}</div>
+                </div>
+            `;
+            field.value = '';
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function checkKey(e) {
+            if(e.key === 'Enter') {
+                postMessage();
+            }
         }
     </script>
 </body>
