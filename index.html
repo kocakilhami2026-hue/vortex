@@ -2,128 +2,83 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VORTEX - Tüm Oyunların Buluşma Noktası</title>
+    <title>VORTEX | Gaming Hub</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Rajdhani:wght@400;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: #050505; color: #e0e0e0; font-family: 'Rajdhani', sans-serif; overflow: hidden; height: 100vh; }
+
+        /* GİRİŞ EKRANI - HAVALI LOUNGE */
+        #login-screen { display: flex; justify-content: center; align-items: center; height: 100vh; 
+                       background: radial-gradient(circle, #1a2a6c, #050505); }
+        .login-box { background: rgba(10, 10, 15, 0.95); padding: 40px; border-radius: 20px; 
+                     border: 1px solid #3b82f6; width: 380px; text-align: center; box-shadow: 0 0 20px #3b82f644; }
+        h1 { font-family: 'Orbitron', sans-serif; color: #3b82f6; font-size: 2.5rem; margin-bottom: 25px; text-transform: uppercase; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; background: #15151a; border: 1px solid #333; 
+                        border-radius: 8px; color: #fff; font-size: 1rem; }
+        .btn-enter { width: 100%; padding: 15px; background: #3b82f6; border: none; border-radius: 8px; 
+                     color: #fff; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: 0.3s; margin-top: 15px; }
+        .btn-enter:hover { background: #2563eb; box-shadow: 0 0 15px #3b82f6; }
+
+        /* ANA EKRAN - DASHBOARD */
+        #app-screen { display: none; height: 100vh; grid-template-columns: 250px 1fr 280px; }
+        .sidebar { background: #0a0a0f; border-right: 1px solid #222; padding: 20px; }
+        .chat-area { background: #0d0d12; display: flex; flex-direction: column; border-right: 1px solid #222; }
+        .friends-bar { background: #0a0a0f; padding: 20px; }
+        
+        .channel { padding: 12px; margin-bottom: 8px; background: #15151a; border-radius: 6px; cursor: pointer; color: #aaa; }
+        .channel:hover { background: #3b82f6; color: white; }
+        .msg-container { flex-grow: 1; padding: 20px; overflow-y: auto; }
+        .chat-input { padding: 20px; border-top: 1px solid #222; display: flex; gap: 10px; }
+    </style>
+</head>
+<body>
+
     <div id="login-screen">
-        <div class="login-container">
+        <div class="login-box">
             <h1>VORTEX</h1>
-            <div class="form-group">
-                <label>Kullanıcı Adın</label>
-                <input type="text" id="username-input" placeholder="Örn: OyunCanavarı" required>
-            </div>
-            <div class="form-group">
-                <label>Oynamak İstediğin Oyun</label>
-                <select id="game-select">
-                    <option value="PUBG Mobile">PUBG Mobile</option>
-                    <option value="Minecraft">Minecraft</option>
-                    <option value="Roblox">Roblox</option>
-                    <option value="Valorant">Valorant</option>
-                    <option value="Brawl Stars">Brawl Stars</option>
-                    <option value="eFootball">eFootball</option>
-                    <option value="Free Fire">Free Fire</option>
-                    <option value="GTA V">GTA V</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Oyun Tarzın</label>
-                <select id="style-select">
-                    <option value="Rank Kasma">Rank Kasma (Ciddi/E-Spor)</option>
-                    <option value="Eğlence">Eğlence / Makara</option>
-                </select>
-            </div>
-            <button class="submit-btn" onclick="enterApp()">UYGUN SQUAD'LARI LİSTELE</button>
+            <input type="text" id="user" placeholder="Kullanıcı Adın">
+            <select id="game">
+                <option>PUBG Mobile</option><option>Minecraft</option><option>Valorant</option>
+                <option>Roblox</option><option>Brawl Stars</option><option>eFootball</option>
+                <option>Free Fire</option><option>GTA V</option>
+            </select>
+            <button class="btn-enter" onclick="start()">LOBİYE BAĞLAN</button>
         </div>
     </div>
 
     <div id="app-screen">
-        
-        <div class="sidebar-channels">
-            <div class="app-title">VORTEX CHAT</div>
-            <div class="search-box">
-                <input type="text" placeholder="Kanal veya arkadaş ara...">
-            </div>
-            <div class="channel-section">
-                <span class="section-title">Ses ve Yazı Odaları</span>
-                <ul class="channel-list">
-                    <li class="channel-item active" onclick="changeChannel('genel-sohbet')">genel-sohbet</li>
-                    <li class="channel-item" onclick="changeChannel('pubg-squad')">pubg-squad</li>
-                    <li class="channel-item" onclick="changeChannel('minecraft-tayfa')">minecraft-tayfa</li>
-                    <li class="channel-item" onclick="changeChannel('valorant-comp')">valorant-comp</li>
-                    <li class="channel-item" onclick="changeChannel('roblox-odasi')">roblox-odasi</li>
-                    <li class="channel-item" onclick="changeChannel('brawl-stars-ekip')">brawl-stars-ekip</li>
-                    <li class="channel-item" onclick="changeChannel('efootball-squad')">efootball-squad</li>
-                    <li class="channel-item" onclick="changeChannel('freefire-ekip')">freefire-ekip</li>
-                </ul>
-            </div>
+        <div class="sidebar">
+            <h2 style="color:#3b82f6; margin-bottom:20px;">VORTEX</h2>
+            <div class="channel"># oyun-sohbet</div>
+            <div class="channel"># squad-bul</div>
+            <div class="channel"># takas-ticaret</div>
         </div>
-
         <div class="chat-area">
-            <div class="chat-header" id="current-channel-title"># genel-sohbet</div>
-            <div class="chat-messages" id="chat-box">
-                <div class="message">
-                    <div class="message-info">
-                        <span class="msg-user">Sistem</span>
-                        <span class="msg-tag">BOT</span>
-                    </div>
-                    <span class="msg-text">Vortex canlandırma projesine hoş geldin kanka! Türkiye'nin tüm popüler oyunları buraya eklendi.</span>
-                </div>
-            </div>
-            <div class="chat-input-area">
-                <div class="input-wrapper">
-                    <input type="text" id="msg-input" placeholder="Mesajını buraya yaz..." onkeypress="handleKeyPress(event)">
-                    <button onclick="sendMessage()">Gönder</button>
-                </div>
+            <div id="msg-box" class="msg-container"></div>
+            <div class="chat-input">
+                <input type="text" id="msg" placeholder="Mesaj gönder...">
+                <button onclick="send()" style="padding:0 20px; background:#3b82f6; border:none; color:white; border-radius:6px;">></button>
             </div>
         </div>
-
-        <div class="sidebar-friends">
-            <span class="section-title" style="margin-bottom: 15px; display: block;">Aktif Oyuncular (17)</span>
-            <div class="friend-status"><div class="status-dot"></div> <span id="local-user-display">Sen</span></div>
-            <div class="friend-status"><div class="status-dot"></div> Pro_Minecraftci</div>
-            <div class="friend-status"><div class="status-dot"></div> PUBG_Ersan</div>
-            <div class="friend-status"><div class="status-dot"></div> Valorant_Vandal</div>
-            <div class="friend-status"><div class="status-dot"></div> Neymar_Edit06</div>
-            <div class="friend-status"><div class="status-dot"></div> FF_Ranger</div>
-            <div class="friend-status"><div class="status-dot"></div> Kayseri_38</div>
+        <div class="friends-bar">
+            <h3>AKTİF OYUNCULAR</h3>
+            <div style="margin-top:20px;">🟢 Vortex_Admin</div>
         </div>
-
     </div>
 
     <script>
-        let profilKullaniciAdi = "Oyuncu";
-        let secilenOyun = "PUBG Mobile";
-        let oyunTarzi = "Rank Kasma";
-
-        function enterApp() {
-            const inputVal = document.getElementById('username-input').value.trim();
-            if(inputVal === "") {
-                alert("Kanka lütfen önce bir kullanıcı adı yaz!");
-                return;
-            }
-            
-            profilKullaniciAdi = inputVal;
-            secilenOyun = document.getElementById('game-select').value;
-            oyunTarzi = document.getElementById('style-select').value;
-
-            document.getElementById('local-user-display').innerText = profilKullaniciAdi + " (Sen)";
+        function start() {
             document.getElementById('login-screen').style.display = 'none';
             document.getElementById('app-screen').style.display = 'grid';
-
-            const chatBox = document.getElementById('chat-box');
-            chatBox.innerHTML += `
-                <div class="message">
-                    <div class="message-info">
-                        <span class="msg-user">${profilKullaniciAdi}</span>
-                        <span class="msg-tag">${secilenOyun} / ${oyunTarzi}</span>
-                    </div>
-                    <span class="msg-text">Odaya bomba gibi giriş yaptı! Takım aranıyor...</span>
-                </div>
-            `;
-            chatBox.scrollTop = chatBox.scrollHeight;
         }
-
-        function changeChannel(channelName) {
-            document.getElementById('current-channel-title').innerText = "# " + channelName;
-            const items = document.querySelectorAll('.channel-item');
-            items.forEach(item => item.classList.remove('active'));
-            if(event &&
+        function send() {
+            let m = document.getElementById('msg').value;
+            if(!m) return;
+            document.getElementById('msg-box').innerHTML += `<div style="padding:10px; border-bottom:1px solid #222;"><b>Sen:</b> ${m}</div>`;
+            document.getElementById('msg').value = '';
+        }
+    </script>
+</body>
+</html>
