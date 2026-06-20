@@ -5,278 +5,453 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VORTEX - Oyuncuların Buluşma Noktası</title>
     <style>
-        /* Modern ve Olgun Oyuncu Teması */
-        body {
+        /* Genel Ayarlar */
+        * {
             margin: 0;
             padding: 0;
-            background-color: #0e1118; /* Koyu Discord Arka Planı */
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            margin-top: 20px;
+        body {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
         }
 
-        h1 {
-            font-size: 3rem;
-            margin: 0;
-            letter-spacing: 4px;
-            background: linear-gradient(45deg, #5865F2, #00d2ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 800;
+        /* SCREEN 1: GİRİŞ EKRANI */
+        #login-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: radial-gradient(circle, #242424 0%, #121212 100%);
         }
 
-        .subtitle {
-            color: #99aab5;
-            font-size: 1.1rem;
-            margin-top: 5px;
-        }
-
-        .main-card {
-            background: #141a26;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 30px;
+        .login-container {
+            background-color: #1e1e1e;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
             width: 100%;
-            max-width: 600px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            margin-bottom: 30px;
+            max-width: 450px;
+            text-align: center;
+            border: 1px solid #333;
         }
 
-        label {
-            font-size: 1rem;
-            color: #99aab5;
+        .login-container h1 {
+            color: #3b82f6;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
             display: block;
-            margin-bottom: 10px;
-            font-weight: 600;
+            margin-bottom: 8px;
+            color: #aaaaaa;
+            font-size: 0.9rem;
         }
 
-        /* Havalı Seçim Kutuları */
-        select, input {
+        .form-group select, .form-group input {
             width: 100%;
             padding: 12px;
-            background-color: #1c2333;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 6px;
             color: white;
             font-size: 1rem;
-            margin-bottom: 20px;
-            box-sizing: border-box;
             outline: none;
             transition: border 0.3s;
         }
 
-        select:focus, input:focus {
-            border-color: #5865F2;
+        .form-group select:focus, .form-group input:focus {
+            border-color: #3b82f6;
         }
 
-        /* Takım Bulma Butonu */
-        .btn-search {
+        .submit-btn {
             width: 100%;
-            background: linear-gradient(45deg, #5865F2, #4752c4);
+            padding: 14px;
+            background-color: #2563eb;
             color: white;
             border: none;
-            padding: 15px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3);
-        }
-
-        .btn-search:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(88, 101, 242, 0.5);
-        }
-
-        /* Oyuncu Sonuç Listesi Bölümü */
-        .results-section {
-            width: 100%;
-            max-width: 600px;
-            display: none; /* İlk başta gizli, aratınca açılacak */
-        }
-
-        .results-title {
-            font-size: 1.2rem;
-            color: #00d2ff;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-
-        .player-card {
-            background: #1c2333;
-            border-left: 5px solid #5865F2;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .player-info h3 {
-            margin: 0 0 5px 0;
-            font-size: 1.1rem;
-            color: #ffffff;
-        }
-
-        .player-info p {
-            margin: 0;
-            font-size: 0.9rem;
-            color: #99aab5;
-        }
-
-        .player-badge {
-            background-color: rgba(0, 210, 255, 0.1);
-            color: #00d2ff;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 5px;
-        }
-
-        /* Discord Kopyalama Butonu */
-        .btn-discord {
-            background-color: #248046; /* Discord Yeşili */
-            color: white;
-            border: none;
-            padding: 10px 16px;
             border-radius: 6px;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.3s;
+            margin-top: 10px;
         }
 
-        .btn-discord:hover {
-            background-color: #1a6535;
+        .submit-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* SCREEN 2: SİMSİYAH DISCORD LOGLOG EKRANI */
+        #app-screen {
+            display: none; /* İlk başta gizli */
+            height: 100vh;
+            grid-template-columns: 240px 1fr 260px;
+        }
+
+        /* 1. Sol Sütun: Kanallar */
+        .sidebar-channels {
+            background-color: #111111;
+            border-right: 1px solid #222;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-title {
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #3b82f6;
+            border-bottom: 1px solid #222;
+            text-align: center;
+        }
+
+        .search-box {
+            padding: 15px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 8px 12px;
+            background-color: #222;
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: white;
+            font-size: 0.85rem;
+        }
+
+        .channel-section {
+            padding: 15px;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .channel-list {
+            list-style: none;
+        }
+
+        .channel-item {
+            padding: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            color: #b9bbbe;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            font-size: 0.95rem;
+        }
+
+        .channel-item:hover, .channel-item.active {
+            background-color: #222;
+            color: white;
+        }
+
+        .channel-item::before {
+            content: "# ";
+            color: #555;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        /* 2. Orta Sütun: Sohbet Alanı */
+        .chat-area {
+            background-color: #151515;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .chat-header {
+            padding: 20px;
+            background-color: #111;
+            border-bottom: 1px solid #222;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            display: flex;
+            flex-direction: column;
+            background-color: #1c1c1c;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+            max-width: 85%;
+        }
+
+        .message-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 5px;
+        }
+
+        .msg-user {
+            font-weight: bold;
+            color: #60a5fa;
+            font-size: 0.9rem;
+        }
+
+        .msg-tag {
+            background-color: #2563eb;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .msg-text {
+            color: #dcddde;
+            font-size: 0.95rem;
+            word-break: break-word;
+        }
+
+        .chat-input-area {
+            padding: 20px;
+            background-color: #111;
+            border-top: 1px solid #222;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-wrapper input {
+            flex-grow: 1;
+            padding: 14px;
+            background-color: #222;
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: white;
+            outline: none;
+        }
+
+        .input-wrapper button {
+            padding: 0 20px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* 3. Sağ Sütun: Arkadaşlar / Çevrimiçi Bölümü */
+        .sidebar-friends {
+            background-color: #111111;
+            border-left: 1px solid #222;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .friend-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 0.9rem;
+            color: #b9bbbe;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #22c55e;
+            border-radius: 50%;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>VORTEX</h1>
-        <div class="subtitle">Yalnız Oynama. Akıllı Eşleşme ile Takımını Kur!</div>
-    </header>
-
-    <!-- Giriş Form Kartı -->
-    <div class="main-card">
-        <label for="username">Oyun İçi Adın (Nick):</label>
-        <input type="text" id="username" placeholder="Örn: Sergen_10">
-
-        <label for="discordId">Discord Kullanıcı Adın (ID):</label>
-        <input type="text" id="discordId" placeholder="Örn: kanka_discord_12">
-
-        <label for="gameSelect">Oynamak İstediğin Oyun:</label>
-        <select id="gameSelect">
-            <option value="eFootball">eFootball</option>
-            <option value="Free Fire">Free Fire</option>
-            <option value="Valorant">Valorant</option>
-            <option value="PUBG Mobile">PUBG Mobile</option>
-        </select>
-
-        <label for="styleSelect">Oyun Tarzın:</label>
-        <select id="styleSelect">
-            <option value="Rank Kasma">Rank Kasma (Ciddi/E-Spor)</option>
-            <option value="Makarasına">Makarasına / Eğlence</option>
-            <option value="Turnuva">Turnuva Kadrosu</option>
-        </select>
-
-        <button class="btn-search" onclick="takimBul()">UYGUN SQUAD'LARI LİSTELE</button>
+    <!-- SCREEN 1: GİRİŞ EKRANI -->
+    <div id="login-screen">
+        <div class="login-container">
+            <h1>VORTEX</h1>
+            <div class="form-group">
+                <label>Kullanıcı Adın</label>
+                <input type="text" id="username-input" placeholder="Örn: OyunCanavarı" required>
+            </div>
+            <div class="form-group">
+                <label>Oynamak İstediğin Oyun</label>
+                <select id="game-select">
+                    <option value="eFootball">eFootball</option>
+                    <option value="Free Fire">Free Fire</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Oyun Tarzın</label>
+                <select id="style-select">
+                    <option value="Rank Kasma">Rank Kasma (Ciddi/E-Spor)</option>
+                    <option value="Eğlence">Eğlence / Makara</option>
+                </select>
+            </div>
+            <button class="submit-btn" onclick="enterApp()">UYGUN SQUAD'LARI LİSTELE</button>
+        </div>
     </div>
 
-    <!-- Sonuçların Listelendiği Alan -->
-    <div class="results-section" id="resultsSection">
-        <div class="results-title" id="resultsTitle">Senin İçin Bulunan Uyumlu Oyuncular:</div>
-        <div id="playerList"></div>
+    <!-- SCREEN 2: DISCORD KLONU ANA EKRAN -->
+    <div id="app-screen">
+        
+        <!-- Sol Menü: Arama ve Kanallar -->
+        <div class="sidebar-channels">
+            <div class="app-title">VORTEX CHAT</div>
+            <div class="search-box">
+                <input type="text" placeholder="Kanal veya arkadaş ara...">
+            </div>
+            <div class="channel-section">
+                <span class="section-title">Ses ve Yazı Odaları</span>
+                <ul class="channel-list">
+                    <li class="channel-item active" onclick="changeChannel('genel-sohbet')">genel-sohbet</li>
+                    <li class="channel-item" onclick="changeChannel('efootball-squad')">efootball-squad</li>
+                    <li class="channel-item" onclick="changeChannel('freefire-ekip')">freefire-ekip</li>
+                    <li class="channel-item" onclick="changeChannel('rank-kasanlar')">rank-kasanlar</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Orta Alan: Sohbet Penceresi -->
+        <div class="chat-area">
+            <div class="chat-header" id="current-channel-title"># genel-sohbet</div>
+            <div class="chat-messages" id="chat-box">
+                <!-- Varsayılan Hoş Geldin Mesajları -->
+                <div class="message">
+                    <div class="message-info">
+                        <span class="msg-user">Sistem</span>
+                        <span class="msg-tag">BOT</span>
+                    </div>
+                    <span class="msg-text">Vortex canlandırma projesine hoş geldin kanka! Burası senin yeni oyun üssün.</span>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <div class="input-wrapper">
+                    <input type="text" id="msg-input" placeholder="Mesajını buraya yaz ve gönder..." onkeypress="handleKeyPress(event)">
+                    <button onclick="sendMessage()">Gönder</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sağ Menü: Arkadaşlar / Aktif Oyuncular -->
+        <div class="sidebar-friends">
+            <span class="section-title" style="margin-bottom: 15px; display: block;">Aktif Oyuncular (17)</span>
+            <div class="friend-status"><div class="status-dot"></div> <span id="local-user-display">Sen</span></div>
+            <div class="friend-status"><div class="status-dot"></div> Neymar_Edit06</div>
+            <div class="friend-status"><div class="status-dot"></div> FF_Ranger</div>
+            <div class="friend-status"><div class="status-dot"></div> eFoot_Kral</div>
+            <div class="friend-status"><div class="status-dot"></div> Sergen_Y_Fan</div>
+            <div class="friend-status"><div class="status-dot"></div> Kayseri_38</div>
+        </div>
+
     </div>
 
     <script>
-        // Havuzdaki Örnek Oyuncu Veritabanı
-        const oyuncuHavuzu = [
-            { nick: "Neymar_Edits", game: "eFootball", style: "Rank Kasma", discord: "ney_edit99", bio: "Hücum hattına pasör arıyorum, troll gelmesin." },
-            { nick: "Kayserili_38", game: "Free Fire", style: "Makarasına", discord: "kayseri_ff", bio: "Gece tayfası, mikrofon açık eğlencesine." },
-            { nick: "Alpha_Gamer", game: "Valorant", style: "Rank Kasma", discord: "alpha_val", bio: "Radyant hedefli, ciddi oynayacak Duo." },
-            { nick: "GamerGirl_X", game: "Free Fire", style: "Rank Kasma", discord: "gg_freefire", bio: "Rütbe kasıyoruz, rush oynayacak adam lazım." },
-            { nick: "Vefa_Kartali", game: "eFootball", style: "Turnuva", discord: "vefacim", bio: "Turnuva kadrosuna defans emniyeti arıyoruz." },
-            { nick: "Shadow_Walk", game: "PUBG Mobile", style: "Makarasına", discord: "shadow_pubg", bio: "Kafa dengi, muhabbeti saran tayfa gelsin." }
-        ];
+        let profilKullaniciAdi = "Oyuncu";
+        let secilenOyun = "eFootball";
+        let oyunTarzi = "Rank Kasma";
 
-        function takimBul() {
-            const isim = document.getElementById("username").value;
-            const discord = document.getElementById("discordId").value;
-            const secilenOyun = document.getElementById("gameSelect").value;
-            const secilenTarz = document.getElementById("styleSelect").value;
-
-            if(isim === "" || discord === "") {
-                alert("Kanka lütfen önce kendi Nickname ve Discord ID bilgilerini yaz!");
+        // Mavi Butona Basınca Çalışacak Fonksiyon
+        function enterApp() {
+            const inputVal = document.getElementById('username-input').value.trim();
+            if(inputVal === "") {
+                alert("Kanka lütfen önce bir kullanıcı adı yaz!");
                 return;
             }
-
-            // Yapay zeka eşleştirme algoritmasını simüle ediyoruz kanka
-            const filtreliOyuncular = oyuncuHavuzu.filter(o => o.game === secilenOyun && o.style === secilenTarz);
             
-            const listAlan = document.getElementById("playerList");
-            listAlan.innerHTML = ""; // Önceki sonuçları temizle
-            
-            document.getElementById("resultsSection").style.display = "block";
+            // Verileri Alıyoruz
+            profilKullaniciAdi = inputVal;
+            secilenOyun = document.getElementById('game-select').value;
+            oyunTarzi = document.getElementById('style-select').value;
 
-            if(filtreliOyuncular.length === 0) {
-                // Eğer tam eşleşen yoksa, o oyundaki diğer oyuncuları yapay zeka alternatif olarak getiriyor
-                const alternatifler = oyuncuHavuzu.filter(o => o.game === secilenOyun);
-                if(alternatifler.length > 0) {
-                    document.getElementById("resultsTitle").innerHTML = "⚠️ Tam tarzına göre bulunamadı ama Aynı Oyunu Oynayan Yakın Auralı Oyuncular:";
-                    renderList(alternatifler);
-                } else {
-                    document.getElementById("resultsTitle").innerHTML = "❌ Şu an bu oyunda aktif oyuncu bulunamadı, havuz güncelleniyor.";
-                }
-            } else {
-                document.getElementById("resultsTitle").innerHTML = "🔥 Yapay Zeka Algoritması Sizin İçin %98 Uyumlu Oyuncuları Buldu:";
-                renderList(filtreliOyuncular);
+            // Ekrandaki "Sen" yazısını kullanıcının yazdığı isimle güncelliyoruz
+            document.getElementById('local-user-display').innerText = profilKullaniciAdi + " (Sen)";
+
+            // Ekranları Değiştiriyoruz
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('app-screen').style.display = 'grid';
+
+            // İlk Giriş Mesajını Otomatik Oluşturma
+            const chatBox = document.getElementById('chat-box');
+            chatBox.innerHTML += `
+                <div class="message">
+                    <div class="message-info">
+                        <span class="msg-user">${profilKullaniciAdi}</span>
+                        <span class="msg-tag">${secilenOyun} / ${oyunTarzi}</span>
+                    </div>
+                    <span class="msg-text">Odaya giriş yaptı! Takım aranıyor...</span>
+                </div>
+            `;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Kanal Değiştirme Efekti
+        function changeChannel(channelName) {
+            document.getElementById('current-channel-title').innerText = "# " + channelName;
+            
+            // Aktif kanal tasarımını güncelleme
+            const items = document.querySelectorAll('.channel-item');
+            items.forEach(item => item.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Mesaj Gönderme Sistemi
+        function sendMessage() {
+            const input = document.getElementById('msg-input');
+            const messageText = input.value.trim();
+            
+            if(messageText === "") return;
+
+            const chatBox = document.getElementById('chat-box');
+            
+            // Ekrana Yeni Mesajı Basma
+            chatBox.innerHTML += `
+                <div class="message">
+                    <div class="message-info">
+                        <span class="msg-user">${profilKullaniciAdi}</span>
+                        <span class="msg-tag">Oyuncu</span>
+                    </div>
+                    <span class="msg-text">${messageText}</span>
+                </div>
+            `;
+
+            input.value = ""; // Giriş kutusunu temizle
+            chatBox.scrollTop = chatBox.scrollHeight; // Sohbeti en aşağı kaydır
+        }
+
+        // Enter Tuşuna Basınca Gönderme
+        function handleKeyPress(e) {
+            if(e.key === 'Enter') {
+                sendMessage();
             }
         }
-
-        function renderList(liste) {
-            const listAlan = document.getElementById("playerList");
-            liste.forEach(oyuncu => {
-                const kart = document.createElement("div");
-                kart.className = "player-card";
-                kart.innerHTML = `
-                    <div class="player-info">
-                        <h3>${oyuncu.nick}</h3>
-                        <p>${oyuncu.bio}</p>
-                        <span class="player-badge">${oyuncu.style}</span>
-                    </div>
-                    <button class="btn-discord" onclick="kopyala('${oyuncu.discord}')">Discord Kopyala</button>
-                `;
-                listAlan.appendChild(kart);
-            });
-        }
-
-        function kopyala(text) {
-            navigator.clipboard.writeText(text);
-            alert("Discord Kullanıcı Adı Kopyalandı: " + text + "\nŞimdi Discord'dan ekleyip maça girebilirsin kanka!");
-        }
     </script>
-
 </body>
 </html>
